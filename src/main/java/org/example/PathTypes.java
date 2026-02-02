@@ -8,7 +8,7 @@ public enum PathTypes {
     private final String value;
 
     PathTypes(String value) {
-        this.value = value;
+        this.value = value;;
     }
 
     public String getValue() {

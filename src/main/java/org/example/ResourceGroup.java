@@ -5,11 +5,34 @@ import java.util.List;
 
 public class ResourceGroup {
     private List<User> members;
-    private String ipAdress;
+    private String ipAddress;
 
-    public ResourceGroup(List<User> members, String ipAdress) {
+    public ResourceGroup(String ipAddress) {
         this.members = new ArrayList<>();
-        this.ipAdress = ipAdress;
+        this.ipAddress = ipAddress;
+    }
+
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        ResourceGroup group = (ResourceGroup) o;
+        return ipAddress.equals(group.ipAddress);
+    }
+
+    public boolean hasMember(String name, String role) {
+        for (User u : members)
+            if (u.getName().equals(name) && u.getRole().equals(role))
+                return true;
+
+        return false;
+    }
+
+    public int hashCode() {
+        return ipAddress.hashCode();
     }
 
     public void addMember(User user) {
@@ -20,11 +43,11 @@ public class ResourceGroup {
         return members;
     }
 
-    public void removeMember(User user) {
-        members.remove(user);
+    public boolean removeMember(String name, String role) {
+        return members.removeIf(u -> u.getName().equals(name) && u.getRole().equals(role));
     }
 
-    public String getIpAdress() {
-        return ipAdress;
+    public String getIpAddress() {
+        return ipAddress;
     }
 }

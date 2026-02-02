@@ -4,32 +4,16 @@ public class Alert {
     private AlertType type;
     private Severity severity;
     private String message;
-    private String ipAdress;
+    private String ipAddress;
 
-    public Alert(AlertType type, Severity severity, String message, String ipAdress) {
+    public Alert(AlertType type, Severity severity, String message, String ipAddress) {
         this.type = type;
         this.severity = severity;
         this.message = message;
-        this.ipAdress = ipAdress;
-    }
-
-    public AlertType getType() {
-        return type;
-    }
-
-    public Severity getSeverity() {
-        return severity;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public String getIpAdress() {
-        return ipAdress;
+        this.ipAddress = ipAddress;
     }
 
     public String toString() {
-        return "Alert [" + type + "/" + severity + "] on " + ipAdress + ": " + message;
+        return "type = " + type + " && severity = " + severity + " && message = " + message;
     }
 }

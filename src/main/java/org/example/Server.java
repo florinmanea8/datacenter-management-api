@@ -1,7 +1,7 @@
 package org.example;
 
 public class Server {
-    private String ipAdress;
+    private String ipAddress;
     private Location location;
     private User owner;
     private String hostname;
@@ -10,16 +10,32 @@ public class Server {
     private Integer ramGb;
     private Integer storageGb;
 
-    public Server(String ipAdress, Location location, User owner, String hostname, ServerStatus status) {
-        this.ipAdress = ipAdress;
+    public Server(String ipAddress, Location location, User owner, String hostname, ServerStatus status) {
+        this.ipAddress = ipAddress;
         this.location = location;
         this.owner = owner;
         this.hostname = hostname;
         this.status = status;
     }
 
-    public String getIpAdress() {
-        return ipAdress;
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        Server server = (Server) o;
+
+        return ipAddress.equals(server.ipAddress);
+    }
+
+    public int hashCode() {
+        return ipAddress.hashCode();
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
     }
 
     public Location getLocation() {
@@ -67,6 +83,6 @@ public class Server {
     }
 
     public String toString() {
-        return "Server " + ipAdress + " (" + status + ")";
+        return "Server " + ipAddress + " (" + status + ")";
     }
 }
