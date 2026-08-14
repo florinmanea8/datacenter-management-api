@@ -1,15 +1,24 @@
-In implementarea temei am urmarint sa rezolv cerinta temei, punand accent pe utilizarea corecta a Design Pattern-urilor si a principiilor OOP studiate (mostenire, polimorfism, incapsulare).
+# Datacenter Management API
 
-Am ales sa structurez aplicatia folosind urmatoarele 4 Design Pattern-uri, pentru a evita codul repetitiv si pentru a separa reponsabilitatile:
+## Overview
+This project is a Java-based API built to manage system alerts and IT infrastructure. The application simulates a real-world datacenter monitoring system by processing command streams and routing system alerts to the correct monitoring teams. The core architecture connects infrastructure management, user groups, and event generation dynamically through server IP addresses.
 
-- Singleton (in clasa "Database") - Am folosit acest pattern pentru a asigura o singura instanta a bazei de date in memorie. Astfel, toate comenzile lucreaza pe aceleasi seturi de "servers" si "resourceGroups".
+## Core Features
+- **Infrastructure Management:** Registers and tracks servers, managing details such as IP address, physical location, hardware specifications (CPU, RAM, Storage), and operational status (UP, DOWN, DEGRADED).
+- **Role-Based Access Control (RBAC):** Manages different hierarchical user levels: standard Users, Operators (assigned to specific departments), and Admins (requiring specific clearance levels).
+- **Resource Monitoring Groups:** Allows the creation of dedicated teams assigned to monitor specific servers based on their IP addresses.
+- **Event-Driven Alert System:** When a server generates a new alert (Anomaly or Advisory) with varying severity levels (Low, Medium, High, Critical), the system automatically notifies the linked monitoring group so operators can handle the event promptly.
+- **Robust Error Handling:** Implements custom exceptions to handle edge cases gracefully, such as *MissingIpAddressException*, *LocationException*, and *UserException*.
 
-- Factory (in clasa "UserFactory") - Am folosit acest pattern pentru a simplifica crearea obiectelor de tip "User". In loc sa verific manual in "Main" ce tip de utilizator trebuie creat, clasa "UserFactory" analizeaza parametrii si returneaza instanta corecta ("Admin", "Operator" sau "User").
+## Technical Architecture & Design Patterns
+The application is strictly built upon Object-Oriented Programming principles, utilizing inheritance, polymorphism, and advanced error handling.
 
-- Builder (in clasa "ServerBuilder") - Am folosit acest pattern, deoarece entitatea "Server" are multe atribute si ne-ar fi fost greu sa urmarim un constructor clasic. Builder-ul permite construirea pas cu pas a obiectului si setarea doar a parametrilor disponibili in fisierul de intrare.
+To ensure clean code, separation of concerns, and scalability, the architecture implements several Design Patterns:
+- **Singleton Pattern:** Used for the central *Database* instance to prevent multiple instantiations and maintain a single source of truth for the in-memory collections of servers, resource groups, and alerts.
+- **Command Pattern:** Encapsulates incoming requests as objects (e.g., *AddServerCommand*, *AddEventCommand*), executed via a *CommandInvoker*.
+- **Factory Pattern:** Utilized (*UserFactory*) to abstract and centralize the creation logic for different types of users based on roles.
+- **Builder Pattern:** Implemented (*ServerBuilder*) to handle the flexible construction of Server objects with multiple optional parameters (like hostname or storage).
 
-- Command (interfata "Command" si clasa "CommandInvoker") - Am folosit acest pattern pentru a transforma fiecare operatiune (de ex: "ADD SERVER", "ADD EVENT") intr-o clasa separata care implementeaza interfata "Command". Asta a eliminat structurile imense de "if" si "else" si a facut codul mult mai usor de testat si extins.
+## How It Works
 
-
-Clasa "Main" am pastrat-o curata. Aceasta are rolul de a coordona executia.
-Clasa "CommandInvoker" stie sa mapeze string-ul comenzii la clasa corespunzatoare. Programul itereaza prin toate fisierele primite ca argument, proceseaza liniile si scrie rezultatele sau erorile in fisiere de output.
+The API acts as a processor for simulated batch commands, reading from CSV-like input files separated by the pipe | character. It processes infrastructure commands (*ADD SERVER*), group management commands (*ADD GROUP*, *ADD MEMBER*), and system events (*ADD EVENT*), logging the state changes and captured exceptions to designated output streams.
